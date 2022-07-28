@@ -1,0 +1,72 @@
+import pyautogui
+
+
+
+acc_balance = 450000
+password = 9583
+
+# Defining all service functions
+def balance():
+    global acc_balance
+    print("Your current balance is : ", acc_balance,'\n')
+    print('''
+    Have a Nice Day.
+    Thanks for visiting SBI ATM
+    ''')
+
+def withdrawal (amount):
+    global acc_balance
+    acc_balance = acc_balance - amount
+    print("You withdraw successfully :", amount,'Rs.','\n')
+    print("Your Current Balance: ", acc_balance,'Rs.','\n')
+    print('''
+    Have a Nice Day.
+    Thanks for visiting SBI ATM
+    ''')
+def deposit(deposit_amount):
+    global acc_balance
+    acc_balance += deposit_amount
+    print(deposit_amount,'Rs. successfully deposited.','\n')
+    print("Your Current Balance: ", acc_balance,'Rs.','\n')
+    print('''
+    Have a Nice Day.
+    Thanks for visiting SBI ATM
+    ''')
+
+
+
+password = pyautogui.password("Enter 4- digit password.")
+
+
+
+if password== '9583':
+    # Select Service
+    service= pyautogui.confirm('Select Service', buttons=['Withdrawal', 'Deposit','Balance','Pin Change'])
+  
+    if service == 'Withdrawal':
+        amount = pyautogui.prompt('Enter amount to withdrawal:')
+        amount = int(amount)
+        withdrawal(amount)
+    
+    elif service== 'Deposit':
+        deposit_amount = int(input("Enter amount to deposit: "))
+        deposit(deposit_amount)
+    
+    elif service=='Balance':
+        balance()
+    
+    elif service== 'Pin Change':
+        for i in range(2):
+            old_pass = int(input("Enter your Old Password: "))
+            if old_pass == '9583':
+                password = int(input("Enter your new password: "))
+                print("Password changed sucessfully.")
+                break
+            else:
+                pyautogui.alert('Old Password does not match. Kindly Enter right Password')
+                
+                i+=1
+        if i ==2:
+            pyautogui.alert('You enterd wrong password many time. Try after 24hrs.')
+else:
+    pyautogui.alert('Incorrect Password')
